@@ -13,9 +13,9 @@ const Transaction = {
                     return callback(err);
                 }
 
-                // Check if patient_id exists in prescriptions
-                const checkSql = "SELECT COUNT(*) AS count FROM prescriptions WHERE patient_id = ?";
-                connection.query(checkSql, [transactionData.patient_id], (err, results) => {
+                // Check if symptom_id exists in prescriptions
+                const checkSql = "SELECT COUNT(*) AS count FROM prescriptions WHERE symptom_id = ?";
+                connection.query(checkSql, [transactionData.symptom_id], (err, results) => {
                     if (err) {
                         return connection.rollback(() => {
                             connection.release();
@@ -26,13 +26,18 @@ const Transaction = {
                     if (results[0].count === 0) {
                         return connection.rollback(() => {
                             connection.release();
-                            callback(new Error("Patient ID does not exist in prescriptions table"));
+                            callback(new Error("Symptom ID does not exist in prescriptions table"));
                         });
                     }
 
                     // Insert transaction
-                    const insertSql = "INSERT INTO payment_transactions (patient_id, amount, payment_status) VALUES (?, ?, ?)";
-                    connection.query(insertSql, [transactionData.patient_id, transactionData.amount, transactionData.payment_status], (err, result) => {
+                    const insertSql = "INSERT INTO payment_transactions (patient_id, symptom_id, amount, payment_status) VALUES (?, ?, ?, ?)";
+                    connection.query(insertSql, [
+                        transactionData.patient_id,
+                        transactionData.symptom_id,
+                        transactionData.amount,
+                        transactionData.payment_status
+                    ], (err, result) => {
                         if (err) {
                             return connection.rollback(() => {
                                 connection.release();
@@ -41,8 +46,8 @@ const Transaction = {
                         }
 
                         // Update prescriptions table
-                        const updateSql = "UPDATE prescriptions SET is_payment_completed = 1 WHERE patient_id = ?";
-                        connection.query(updateSql, [transactionData.patient_id], (err, result) => {
+                        const updateSql = "UPDATE prescriptions SET is_payment_completed = 1 WHERE symptom_id = ?";
+                        connection.query(updateSql, [transactionData.symptom_id], (err, result) => {
                             if (err) {
                                 return connection.rollback(() => {
                                     connection.release();
@@ -65,6 +70,21 @@ const Transaction = {
                     });
                 });
             });
+        });
+    },
+
+    getTransactionById: (id, callback) => {
+        const sql = `SELECT pt.amount, pt.created_at, pt.transaction_id, 
+        pt.payment_status, p.medicine,p.dosage, p.notes, 
+        ps.age,ps.symptoms, u.firstname as patient_firstname, 
+        u.lastname as patient_lastname, u.email as patient_email 
+        FROM prescriptions p, patients_symptoms ps, 
+        users u, payment_transactions pt WHERE p.symptom_id = ps.symptom_id 
+        and pt.symptom_id = p.symptom_id and pt.patient_id = u.id 
+        and ps.symptom_id = ${id}`;
+        db.query(sql, [id], (err, results) => {
+            if (err) return callback(err);
+            callback(null, results[0]); // Return first result
         });
     },
 
