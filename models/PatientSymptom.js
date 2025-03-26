@@ -24,15 +24,7 @@ const PatientSymptom = {
         db.query(sql, [symptom_id], callback);
     },
     getAll: (callback) => {
-        const sql = "SELECT * FROM patients_symptoms";
-        db.query(sql, callback);
-    },
-    getPatientsWithPrescriptions: (callback) => {
-        const sql = "SELECT ps.* FROM `patients_symptoms` ps, prescriptions p WHERE p.symptom_id = ps.symptom_id";
-        db.query(sql, callback);
-    },
-    getPatientsWithoutPrescriptions: (callback) => {
-        const sql = "SELECT ps.* FROM `patients_symptoms` ps, prescriptions p WHERE p.symptom_id = ps.symptom_id";
+        const sql = "SELECT CONCAT(u.firstname,' ', u.lastname) as patient_name, ps.* FROM patients_symptoms ps, users u where u.id = ps.patient_id";
         db.query(sql, callback);
     },
 };
