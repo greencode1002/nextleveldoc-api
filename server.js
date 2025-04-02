@@ -9,6 +9,8 @@ const userRoutes = require("./routes/userRoutes");
 const patientSymptomRoutes = require("./routes/patientSymptomRoutes");
 const prescriptionRoutes = require("./routes/prescriptionRoutes");
 const transactionsRoutes = require("./routes/transactionsRoutes");
+const patientRoutes = require("./routes/patientRoutes");
+
 
 dotenv.config();
 const app = express();
@@ -40,17 +42,18 @@ const swaggerOptions = {
         "./routes/userRoutes.js",
         "./routes/patientSymptomRoutes.js",
         "./routes/prescriptionRoutes.js",
-        "./routes/transactionsRoutes.js"
+        "./routes/transactionsRoutes.js",
+        "./routes/patientRoutes.js"
     ],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 app.use("/api/users", userRoutes);
 app.use("/api/patientsymptoms", patientSymptomRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/transactions", transactionsRoutes);
+app.use("/api/patient", patientRoutes);
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
