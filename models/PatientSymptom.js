@@ -31,7 +31,7 @@ const PatientSymptom = {
     updateSymptom: (symptom, callback) => {
         const sql = `
             UPDATE patients_symptoms 
-            SET patient_id = ?, age = ?, symptoms = ?, nurse_id = ?
+            SET patient_id = ?, age = ?, symptoms = ?, nurse_id = ?,
             is_prescribed = ?, is_diagnosed_with_diabetes = ?, has_drug_allergy = ?, 
             has_food_allergy = ?, family_history_diabetes = ?, is_smoker = ?
             WHERE symptom_id = ?;
