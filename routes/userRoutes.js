@@ -36,7 +36,7 @@ userRouter.post("/register", User.register);
 /**
  * @swagger
  * /api/users/updateuser/{id}:
- *   post:
+ *   put:
  *     summary: Update user
  *     parameters:
  *       - in: path
