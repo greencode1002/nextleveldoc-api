@@ -40,8 +40,8 @@ This is a RESTful API for managing a Doctor's Prescription System, built using *
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/doctors-prescription-api.git
-cd doctors-prescription-api
+git clone https://github.com/greencode1002/nextleveldoc-api.git
+cd nextleveldoc-api
 
 
 2. **Install Dependency and run the project **
