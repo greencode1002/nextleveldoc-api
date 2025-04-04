@@ -119,7 +119,8 @@ transactionsRouter.get("/download/:symptom_id", (req, res) => {
             .text(`Age: ${safeText(transaction.age)}`)
             .text(`Symptoms: ${safeText(transaction.symptoms)}`)
             .text(`Email: ${safeText(transaction.patient_email)}`)
-            .text(`Date: ${new Date(transaction.created_at).toLocaleDateString()}`)
+            .text(`ConsultationCreate New Account
+ Date: ${new Date(transaction.created_at).toLocaleDateString()}`)
             .moveDown(1);
 
         // Prescription Table Header

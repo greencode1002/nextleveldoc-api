@@ -1,4 +1,3 @@
-// routes/patientRoutes.js
 const express = require("express");
 const PatientSymptom = require("../models/PatientSymptom");
 const patientSymptomRouter = express.Router();
@@ -23,6 +22,18 @@ const patientSymptomRouter = express.Router();
  *                 type: string
  *               nurse_id:
  *                 type: integer
+ *               is_prescribed:
+ *                 type: integer
+ *               is_diagnosed_with_diabetes:
+ *                 type: integer
+ *               has_drug_allergy:
+ *                 type: integer
+ *               has_food_allergy:
+ *                 type: integer
+ *               family_history_diabetes:
+ *                 type: integer
+ *               is_smoker:
+ *                 type: integer   
  *     responses:
  *       201:
  *         description: Patient symptom added successfully
@@ -76,6 +87,18 @@ patientSymptomRouter.get("/", (req, res) => {
  *                 type: string
  *               nurse_id:
  *                 type: integer
+ *               is_prescribed:
+ *                 type: integer
+ *               is_diagnosed_with_diabetes:
+ *                 type: integer
+ *               has_drug_allergy:
+ *                 type: integer
+ *               has_food_allergy:
+ *                 type: integer
+ *               family_history_diabetes:
+ *                 type: integer
+ *               is_smoker:
+ *                 type: integer   
  *     responses:
  *       200:
  *         description: Patient symptoms updated successfully
@@ -83,8 +106,31 @@ patientSymptomRouter.get("/", (req, res) => {
 patientSymptomRouter.put("/update/:symptom_id", (req, res) => {
     let symptom_id = req?.params?.symptom_id;
     symptom_id = parseInt(symptom_id);
-    const { patient_id, age, symptoms, nurse_id } = req.body;
-    PatientSymptom.updateSymptom({ symptom_id, patient_id, age, symptoms, nurse_id }, (err, result) => {
+    const {
+        patient_id,
+        age,
+        symptoms,
+        nurse_id,
+        is_prescribed,
+        is_diagnosed_with_diabetes,
+        has_drug_allergy,
+        has_food_allergy,
+        family_history_diabetes,
+        is_smoker
+    } = req.body;
+    PatientSymptom.updateSymptom({
+        symptom_id,
+        patient_id,
+        age,
+        symptoms,
+        nurse_id,
+        is_prescribed,
+        is_diagnosed_with_diabetes,
+        has_drug_allergy,
+        has_food_allergy,
+        family_history_diabetes,
+        is_smoker
+    }, (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ message: "Patient symptoms updated successfully" });
     });
